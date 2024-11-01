@@ -84,7 +84,7 @@ const Login = () => {
               Não possui conta?
             </Text>
             <Link
-              href="/produtos"
+              href="/registro"
               className="text-lg font-psemibold text-secondary"
             >
               Registre-se

@@ -14,10 +14,11 @@ import EmptyState from "../../components/EmptyState";
 import ProductCard from "../../components/ProductCard";
 import { getAllPosts } from "../../lib/appWrite";
 import useAppWrite from "../../lib/useAppWrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Produtos = () => {
   const { data: posts, refetch } = useAppWrite(getAllPosts);
-
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -25,27 +26,33 @@ const Produtos = () => {
     await refetch();
     setRefreshing(false);
   };
-
   return (
     <SafeAreaView className="bg-primary h-full">
-      <FlatList
+      <FlatList 
+      
         data={posts}
-        
         keyExtractor={(item) => item.$id}
+        numColumns={3}
         renderItem={({ item }) => (
           <ProductCard produto={item} />
+          
         )}
+        
+        contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 20 }}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+
         ListHeaderComponent={() => (
           <View className="flex my-6 px-4 space-y-6">
             <View className="flex justify-between items-start flex-row mb-6">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">
-                  Bem Vindo
+                  Bem Vindo,
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Teste
+                  {user?.username}!
                 </Text>
               </View>
+              
 
               <View className="mt-1.5">
                 <Image
@@ -69,8 +76,12 @@ const Produtos = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+      
     </SafeAreaView>
+    
   );
+  
 };
+
 
 export default Produtos;
